@@ -16,7 +16,13 @@ module Facter::UserSshPubkey
 
   def self.add_facts_for_user(username)
     Facter.debug("Looking for SSH keys for user '#{username}'")
-    user = Etc.getpwnam(username)
+    user = nil
+    begin
+      user = Etc.getpwnam(username)
+    rescue
+      Facter.debug("Did not find user '#{username}'")
+      return nil
+    end
     sshdir = File.join(user.dir, '.ssh')
 
     [ 'rsa', 'dsa', 'ecdsa', 'ed25519' ].each do |keytype|
