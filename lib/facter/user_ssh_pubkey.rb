@@ -16,7 +16,6 @@ module Facter::UserSshPubkey
 
   def self.add_facts_for_user(username)
     Facter.debug("Looking for SSH keys for user '#{username}'")
-    user = nil
     begin
       user = Etc.getpwnam(username)
     rescue
