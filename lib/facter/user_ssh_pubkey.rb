@@ -55,8 +55,9 @@ module Facter::UserSshPubkey
   def self.add_facts
     users_fact = Facter.value('user_ssh_pubkey')
     Facter.debug("'users_fact' is '#{users_fact}'")
-    users = users_fact ? users_fact.split(',') : []
+    return nil unless users_fact
 
+    users = users_fact.respond_to?(:to_ary) ? users_fact : users_fact.split(',')
     users.each { |user| Facter::UserSshPubkey.add_facts_for_user(user) }
   end
 end
